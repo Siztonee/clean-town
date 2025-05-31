@@ -1,38 +1,38 @@
 <template>
-  <header class="bg-emerald-600 text-white shadow-md">
+  <header class="bg-gray-800 text-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3">
       <div class="flex justify-between items-center">
         <!-- Логотип и название -->
-        <router-link to="/" class="flex items-center space-x-3">
-          <div class="bg-white rounded-full p-2">
-              <img class="w-8 h-8" :src="logo" alt="Logo">
+        <router-link to="/" class="flex items-center space-x-3 group">
+          <div class="bg-emerald-600 rounded-full p-2 transition-all duration-300 group-hover:bg-emerald-500">
+            <img class="w-8 h-8" :src="logo" alt="Logo">
           </div>
           <span class="text-xl font-bold tracking-wide">CleanTown</span>
         </router-link>
 
         <!-- Навигация для десктопа -->
-        <nav class="hidden md:flex space-x-8">
+        <nav class="hidden md:flex space-x-6">
           <router-link 
             to="/events" 
-            class="py-2 hover:text-emerald-100 transition duration-200"
-            active-class="font-semibold underline decoration-2 underline-offset-4">
+            class="py-2 px-3 hover:text-emerald-300 transition duration-200 rounded-lg"
+            active-class="text-emerald-400 font-semibold bg-gray-700">
             Мероприятия
           </router-link>
           <router-link 
             to="/gallery" 
-            class="py-2 hover:text-emerald-100 transition duration-200"
-            active-class="font-semibold underline decoration-2 underline-offset-4">
+            class="py-2 px-3 hover:text-emerald-300 transition duration-200 rounded-lg"
+            active-class="text-emerald-400 font-semibold bg-gray-700">
             Галерея
           </router-link>
           <router-link 
             to="/about" 
-            class="py-2 hover:text-emerald-100 transition duration-200"
-            active-class="font-semibold underline decoration-2 underline-offset-4">
+            class="py-2 px-3 hover:text-emerald-300 transition duration-200 rounded-lg"
+            active-class="text-emerald-400 font-semibold bg-gray-700">
             О нас
           </router-link>
           <router-link 
             to="/join" 
-            class="px-4 py-2 bg-white text-emerald-600 rounded-full hover:bg-emerald-50 font-medium transition shadow-sm">
+            class="ml-2 px-5 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 font-medium transition shadow-md hover:shadow-emerald-500/30">
             Присоединиться
           </router-link>
         </nav>
@@ -40,7 +40,7 @@
         <!-- Мобильное меню -->
         <button 
           @click="isMenuOpen = !isMenuOpen"
-          class="md:hidden text-white focus:outline-none"
+          class="md:hidden text-white focus:outline-none p-2 rounded-lg hover:bg-gray-700 transition"
           aria-label="Меню">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path v-if="!isMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -50,34 +50,38 @@
       </div>
 
       <!-- Мобильная навигация -->
-      <div 
-        v-if="isMenuOpen" 
-        class="md:hidden py-4 space-y-4 animate-fadeIn">
-        <router-link 
-          to="/events" 
-          class="block py-2 px-4 hover:bg-emerald-500 rounded transition"
-          @click="isMenuOpen = false">
-          Мероприятия
-        </router-link>
-        <router-link 
-          to="/gallery" 
-          class="block py-2 px-4 hover:bg-emerald-500 rounded transition"
-          @click="isMenuOpen = false">
-          Галерея
-        </router-link>
-        <router-link 
-          to="/about" 
-          class="block py-2 px-4 hover:bg-emerald-500 rounded transition"
-          @click="isMenuOpen = false">
-          О нас
-        </router-link>
-        <router-link 
-          to="/join" 
-          class="block mt-4 py-2 px-4 bg-white text-emerald-600 text-center rounded-full font-medium shadow-sm"
-          @click="isMenuOpen = false">
-          Присоединиться
-        </router-link>
-      </div>
+      <transition
+        enter-active-class="animate-fadeInDown"
+        leave-active-class="animate-fadeOutUp">
+        <div 
+          v-if="isMenuOpen" 
+          class="md:hidden py-4 space-y-2 bg-gray-800 rounded-lg mt-2 shadow-xl">
+          <router-link 
+            to="/events" 
+            class="block py-3 px-4 hover:bg-emerald-600 rounded-lg transition"
+            @click="isMenuOpen = false">
+            Мероприятия
+          </router-link>
+          <router-link 
+            to="/gallery" 
+            class="block py-3 px-4 hover:bg-emerald-600 rounded-lg transition"
+            @click="isMenuOpen = false">
+            Галерея
+          </router-link>
+          <router-link 
+            to="/about" 
+            class="block py-3 px-4 hover:bg-emerald-600 rounded-lg transition"
+            @click="isMenuOpen = false">
+            О нас
+          </router-link>
+          <router-link 
+            to="/join" 
+            class="block mt-4 py-3 px-4 bg-emerald-600 text-white text-center rounded-full font-medium shadow-md hover:bg-emerald-500 transition"
+            @click="isMenuOpen = false">
+            Присоединиться
+          </router-link>
+        </div>
+      </transition>
     </div>
   </header>
 </template>
@@ -90,12 +94,33 @@ const isMenuOpen = ref(false)
 </script>
 
 <style scoped>
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
+.animate-fadeInDown {
+  animation: fadeInDown 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+.animate-fadeOutUp {
+  animation: fadeOutUp 0.3s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes fadeOutUp {
+  from { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
 }
 </style>

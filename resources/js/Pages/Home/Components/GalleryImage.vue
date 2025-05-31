@@ -5,7 +5,7 @@
     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
       <div class="text-white">
         <h3 class="font-bold text-lg mb-1">Уборка пляжа</h3>
-        <p class="text-emerald-200">15 августа 2023</p>
+        <p class="text-emerald-300">15 августа 2023</p>
       </div>
     </div>
   </div>
