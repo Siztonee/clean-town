@@ -152,8 +152,8 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import TreeImage from '~images/tree.png'  
-import EventCard from '@/Pages/Home/Components/EventCard.vue'
+import EventCard from '@/Components/UI/EventCard.vue'
 import StepCard from '@/Pages/Home/Components/StepCard.vue'
 import StatCard from '@/Pages/Home/Components/StatCard.vue'
-import GalleryImage from '@/Pages/Home/Components/GalleryImage.vue'
+import GalleryImage from '@/Components/UI/GalleryImage.vue'
 </script>

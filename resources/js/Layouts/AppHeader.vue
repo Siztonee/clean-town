@@ -3,38 +3,38 @@
     <div class="container mx-auto px-4 py-3">
       <div class="flex justify-between items-center">
         <!-- Логотип и название -->
-        <router-link to="/" class="flex items-center space-x-3 group">
+        <Link href="/" class="flex items-center space-x-3 group">
           <div class="bg-emerald-600 rounded-full p-2 transition-all duration-300 group-hover:bg-emerald-500">
             <img class="w-8 h-8" :src="logo" alt="Logo">
           </div>
           <span class="text-xl font-bold tracking-wide">CleanTown</span>
-        </router-link>
+        </Link>
 
         <!-- Навигация для десктопа -->
         <nav class="hidden md:flex space-x-6">
-          <router-link 
-            to="/events" 
+          <Link 
+            href="/events" 
             class="py-2 px-3 hover:text-emerald-300 transition duration-200 rounded-lg"
             active-class="text-emerald-400 font-semibold bg-gray-700">
             Мероприятия
-          </router-link>
-          <router-link 
-            to="/gallery" 
+          </Link>
+          <Link 
+            href="/gallery" 
             class="py-2 px-3 hover:text-emerald-300 transition duration-200 rounded-lg"
             active-class="text-emerald-400 font-semibold bg-gray-700">
             Галерея
-          </router-link>
-          <router-link 
-            to="/about" 
+          </Link>
+          <Link 
+            href="/about" 
             class="py-2 px-3 hover:text-emerald-300 transition duration-200 rounded-lg"
             active-class="text-emerald-400 font-semibold bg-gray-700">
             О нас
-          </router-link>
-          <router-link 
-            to="/join" 
+          </Link>
+          <Link 
+            href="/join" 
             class="ml-2 px-5 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 font-medium transition shadow-md hover:shadow-emerald-500/30">
             Присоединиться
-          </router-link>
+          </Link>
         </nav>
 
         <!-- Мобильное меню -->
@@ -56,30 +56,30 @@
         <div 
           v-if="isMenuOpen" 
           class="md:hidden py-4 space-y-2 bg-gray-800 rounded-lg mt-2 shadow-xl">
-          <router-link 
-            to="/events" 
+          <Link 
+            href="/events" 
             class="block py-3 px-4 hover:bg-emerald-600 rounded-lg transition"
             @click="isMenuOpen = false">
             Мероприятия
-          </router-link>
-          <router-link 
-            to="/gallery" 
+          </Link>
+          <Link 
+            href="/gallery" 
             class="block py-3 px-4 hover:bg-emerald-600 rounded-lg transition"
             @click="isMenuOpen = false">
             Галерея
-          </router-link>
-          <router-link 
-            to="/about" 
+          </Link>
+          <Link 
+            href="/about" 
             class="block py-3 px-4 hover:bg-emerald-600 rounded-lg transition"
             @click="isMenuOpen = false">
             О нас
-          </router-link>
-          <router-link 
-            to="/join" 
+          </Link>
+          <Link 
+            href="/join" 
             class="block mt-4 py-3 px-4 bg-emerald-600 text-white text-center rounded-full font-medium shadow-md hover:bg-emerald-500 transition"
             @click="isMenuOpen = false">
             Присоединиться
-          </router-link>
+          </Link>
         </div>
       </transition>
     </div>
@@ -89,6 +89,7 @@
 <script setup>
 import { ref } from 'vue'
 import logo from '~images/logo.png'
+import { Link } from '@inertiajs/vue3'
 
 const isMenuOpen = ref(false)
 </script>
