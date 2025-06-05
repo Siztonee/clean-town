@@ -6,10 +6,10 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class DashboardController extends Controller
+class TeamMembersController extends Controller
 {
     public function index(): \Inertia\Response
     {
-        return Inertia::render('Admin/Dashboard');
+        return Inertia::render('Admin/TeamMembers');
     }
 }
