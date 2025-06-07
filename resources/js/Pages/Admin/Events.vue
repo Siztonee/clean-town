@@ -23,9 +23,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(event, index) in events" :key="index" class="border-b border-gray-700 hover:bg-gray-700/50 transition">
+                <tr v-for="(event, index) in props.events" :key="index" class="border-b border-gray-700 hover:bg-gray-700/50 transition">
                     <td class="px-4 py-3">{{ event.title }}</td>
-                    <td class="px-4 py-3">{{ event.date }}</td>
+                    <td class="px-4 py-3">{{ event.starts_at }}</td>
                     <td class="px-4 py-3">
                     <span :class="[
                         'px-2 py-1 rounded-full text-xs font-medium',
@@ -33,7 +33,7 @@
                         event.status === 'active' ? 'bg-yellow-500/20 text-yellow-400' :
                         'bg-gray-600/20 text-gray-400'
                     ]">
-                        {{ event.statusText }}
+                        {{ event.status }}
                     </span>
                     </td>
                     <td class="px-4 py-3 text-right space-x-2">
@@ -66,16 +66,49 @@
             </button>
           </div>
 
-          <form @submit.prevent="saveEvent" class="space-y-4">
+          <form @submit.prevent="saveEvent" class="space-y-4" enctype="multipart/form-data">
+          <!-- Поле для загрузки изображения -->
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1">Название</label>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Изображение мероприятия</label>
+                
+                <!-- Предпросмотр изображения -->
+                <div v-if="imagePreview" class="mb-3 flex justify-center">
+                    <img :src="imagePreview" class="max-h-48 rounded-lg border border-gray-600 object-cover">
+                </div>
+                <div v-else-if="isEditingEvent && currentEvent.image" class="mb-3 flex justify-center">
+                    <img :src="currentEvent.image_url" class="max-h-48 rounded-lg border border-gray-600 object-cover">
+                </div>
+
+                <!-- Кастомная кнопка загрузки -->
+                <div class="flex items-center justify-center w-full">
+                    <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer border-gray-600 bg-gray-700 hover:bg-gray-600/50 transition">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-400">
+                                <span class="font-semibold">Нажмите для загрузки</span>
+                            </p>
+                            <p class="text-xs text-gray-500">PNG, JPG, JPEG (макс. 2MB)</p>
+                        </div>
+                        <input 
+                            type="file" 
+                            class="hidden" 
+                            accept="image/*"
+                            @change="handleImageUpload"
+                        >
+                    </label>
+                </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1">Заголовок</label>
               <input v-model="currentEvent.title" type="text" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-gray-300 mb-1">Дата</label>
-                <input v-model="currentEvent.date" type="date" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <input v-model="currentEvent.starts_at" type="datetime-local" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
               </div>
               <div>
                 <label class="block text-sm font-medium text-gray-300 mb-1">Статус</label>
@@ -90,6 +123,11 @@
             <div>
               <label class="block text-sm font-medium text-gray-300 mb-1">Место</label>
               <input v-model="currentEvent.location" type="text" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-300 mb-1">Макс. число участников</label>
+              <input v-model="currentEvent.max_members" type="number" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
             </div>
 
             <div>
@@ -113,80 +151,104 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import AdminLayout from '@/Pages/Admin/Layouts/AdminLayout.vue'
+import { router } from '@inertiajs/vue3'
 
-const events = ref([
-  {
-    id: 1,
-    title: 'Весенняя уборка парка',
-    date: '2023-04-15',
-    location: 'Центральный парк',
-    status: 'upcoming',
-    description: 'Общая уборка в Центральном парке, сбор мусора и посадка деревьев'
-  },
-  {
-    id: 2,
-    title: 'Экологический марафон',
-    date: '2023-06-20',
-    location: 'Набережная реки',
-    status: 'active',
-    description: 'Масштабная акция по очистке береговой линии'
-  }
-])
+const props = defineProps({
+  events: Object
+})
 
 const showEventModal = ref(false)
 const isEditingEvent = ref(false)
 const currentEvent = ref({
-  id: null,
   title: '',
-  date: '',
+  starts_at: '',
   location: '',
   status: 'upcoming',
-  description: ''
+  description: '',
+  max_members: '',
+  image: '',
 })
 
 function editEvent(event) {
   isEditingEvent.value = true
-  currentEvent.value = { ...event }
+  currentEvent.value = { ...event, image_url: event.image_url }
+  imageFile.value = null
+  imagePreview.value = null
   showEventModal.value = true
 }
 
 function deleteEvent(event) {
   if (confirm(`Удалить мероприятие "${event.title}"?`)) {
-    events.value = events.value.filter(e => e.id !== event.id)
+    router.delete(`/admin/events/${event.id}`)
   }
 }
 
+const imageFile = ref(null)
+const imagePreview = ref(null)
+
+function handleImageUpload(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    
+    imageFile.value = file 
+    
+    const reader = new FileReader()
+    reader.onload = (e) => {
+        imagePreview.value = e.target.result
+    }
+    reader.readAsDataURL(file)
+}
+
 function saveEvent() {
-  if (isEditingEvent.value) {
-    // Обновление события
-    const index = events.value.findIndex(e => e.id === currentEvent.value.id)
-    if (index > -1) {
-      events.value[index] = { ...currentEvent.value }
+    const formData = new FormData()
+    
+    for (const key in currentEvent.value) {
+        if (currentEvent.value[key] !== null && key !== 'image') {
+            formData.append(key, currentEvent.value[key])
+        }
     }
-  } else {
-    // Добавление нового события
-    const newEvent = {
-      ...currentEvent.value,
-      id: Math.max(...events.value.map(e => e.id), 0) + 1
+    
+    if (imageFile.value) {
+        formData.append('image', imageFile.value)
     }
-    events.value.push(newEvent)
-  }
-  
-  closeEventModal()
+    
+    if (isEditingEvent.value) {
+        formData.append('_method', 'PUT')
+        router.post(`/admin/events/${currentEvent.value.id}`, formData, {
+            onSuccess: () => closeEventModal(),
+            onError: (errors) => console.error(errors),
+            onFinish: () => console.log('Request finished')
+        })
+
+    } else {
+        router.post('/admin/events', formData, {
+            onSuccess: () => closeEventModal(),
+            onError: (errors) => console.error(errors)
+        })
+    }
 }
 
 function closeEventModal() {
   showEventModal.value = false
   isEditingEvent.value = false
   currentEvent.value = {
-    id: null,
     title: '',
-    date: '',
+    starts_at: '',
     location: '',
     status: 'upcoming',
-    description: ''
+    description: '',
+    max_members: '',
+    image_url: '',
   }
+  imageFile.value = null
+  imagePreview.value = null 
 }
+
+watch(() => currentEvent.value, (newVal) => {
+    if (isEditingEvent.value && newVal.image) {
+        imagePreview.value = ''
+    }
+})
 </script>

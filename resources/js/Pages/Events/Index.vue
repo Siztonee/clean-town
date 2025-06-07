@@ -35,9 +35,10 @@
             v-for="(event, index) in filteredEvents" 
             :key="index"
             :title="event.title"
-            :date="event.date"
+            :starts_at="event.starts_at"
             :location="event.location"
-            :participants="event.participants"
+            :max_members="event.max_members"
+            :image="event.image"
             :status="event.status"
           />
         </div>
@@ -95,55 +96,13 @@ const filters = [
 const activeFilter = ref('upcoming')
 const currentPage = ref(1)
 
-// Мероприятия
-const events = [
-  {
-    title: 'Уборка Центрального парка',
-    date: '15 сентября, 10:00',
-    location: 'Центральный парк культуры',
-    participants: '12/30 участников',
-    status: 'upcoming'
-  },
-  {
-    title: 'Эко-забег вдоль реки',
-    date: '18 сентября, 9:30',
-    location: 'Набережная реки Волга',
-    participants: '25/30 участников',
-    status: 'upcoming'
-  },
-  {
-    title: 'Субботник в Северном районе',
-    date: '22 сентября, 11:00',
-    location: 'Лесопарк "Северный"',
-    participants: '8/40 участников',
-    status: 'upcoming'
-  },
-  {
-    title: 'Чистый пляж',
-    date: '5 сентября, 2023',
-    location: 'Городской пляж',
-    participants: '32 участника',
-    status: 'completed'
-  },
-  {
-    title: 'Эко-квест в парке Победы',
-    date: '28 августа, 2023',
-    location: 'Парк Победы',
-    participants: '28 участников',
-    status: 'completed'
-  },
-  {
-    title: 'Уборка лесного массива',
-    date: '10 октября, 14:00',
-    location: 'Лесополоса за микрорайоном',
-    participants: '18/25 участников',
-    status: 'upcoming'
-  }
-]
+const props = defineProps({
+  events: Object
+})
 
 // Фильтрация мероприятий
 const filteredEvents = computed(() => {
-  if (activeFilter.value === 'all') return events
-  return events.filter(event => event.status === activeFilter.value)
+  if (activeFilter.value === 'all') return props.events
+  return props.events.filter(event => event.status === activeFilter.value)
 })
 </script>

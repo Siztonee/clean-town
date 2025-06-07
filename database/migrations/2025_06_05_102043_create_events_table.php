@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('location');
             $table->string('status');
+            $table->string('image');
+            
+            $table->text('description');
 
             $table->unsignedInteger('max_members');
 
