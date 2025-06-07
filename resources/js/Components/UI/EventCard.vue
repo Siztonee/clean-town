@@ -2,7 +2,7 @@
   <div class="bg-gray-800 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
     <!-- Блок изображения -->
     <div class="aspect-video relative" 
-      :style="{ backgroundImage: `url(${image})` } " style="background-size: cover;">
+      :style="{ backgroundImage: `url(${image_url})` } " style="background-size: cover;">
       <div 
         class="absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm"
         :class="{
@@ -31,14 +31,13 @@
         </div>
 
         <!-- Дата и участники -->
-        <div class="grid grid-cols-2 gap-4">
           <div class="flex flex-col">
             <span class="text-xs text-gray-400 uppercase tracking-wider">Дата</span>
             <div class="flex items-center text-gray-300">
               <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
               </svg>
-              {{ starts_at }}
+              {{ formatDate(starts_at) }}
             </div>
           </div>
 
@@ -48,35 +47,51 @@
               <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
               </svg>
-              {{ max_members }}
+              {{ members_count }}
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Кнопка действия -->
-      <Link 
-        href="#" 
-        class="w-full py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-medium rounded-lg text-center transition-all duration-300 shadow-md hover:shadow-emerald-500/25">
-        {{ status === 'completed' ? 'Смотреть отчет' : 'Участвовать' }}
-      </Link>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
+import { Link } from '@inertiajs/vue3'
+import dayjs from 'dayjs';
+
+const monthsGenitive = [
+  'января', 'февраля', 'марта', 'апреля',
+  'мая', 'июня', 'июля', 'августа',
+  'сентября', 'октября', 'ноября', 'декабря'
+];
+
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  
+  const date = dayjs(dateString);
+  const now = dayjs();
+  
+  if (!date.isValid()) return '';
+
+  if (date.isSame(now, 'year')) {
+    return `${date.date()}-${monthsGenitive[date.month()]} ${date.format('HH:mm')}`;
+  } 
+  else {
+    return date.format('YYYY.MM.DD HH:mm');
+  }
+};
 
 const props = defineProps({
   title: String,
   starts_at: String,
   location: String,
-  max_members: String,
+  members_count: Number,
   status: {
     type: String,
     default: 'upcoming'
   },
-  image: String
+  image_url: String
 })
 
 const statusText = computed(() => {

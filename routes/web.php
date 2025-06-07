@@ -2,6 +2,9 @@
 
 use Inertia\Inertia;
 use App\Models\Event;
+use App\Models\FAQItem;
+use App\Models\Gallery;
+use App\Models\TeamMember;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\FAQController;
@@ -14,16 +17,21 @@ Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::get('/events', function () {
     return Inertia::render('Events/Index', [
-        'events' => Event::all()
+        'events' => Event::withCount('members')->get()
     ]);
 });
 
 Route::get('/gallery', function () {
-    return Inertia::render('Gallery/Index');
+    return Inertia::render('Gallery/Index', [
+        'galleries' => Gallery::all()
+    ]);
 });
 
 Route::get('/about', function () {
-    return Inertia::render('About/Index');
+    return Inertia::render('About/Index', [
+        'teamMembers' => TeamMember::all(),
+        'faq' => FAQItem::all()
+    ]);
 });
 
 Route::prefix('admin')->group(function() {

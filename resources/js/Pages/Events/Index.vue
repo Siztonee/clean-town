@@ -28,7 +28,7 @@
     </section>
 
     <!-- Сетка мероприятий -->
-    <section class="py-16 bg-gray-800">
+    <section class="py-16 bg-gray-900">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <EventCard 
@@ -37,8 +37,8 @@
             :title="event.title"
             :starts_at="event.starts_at"
             :location="event.location"
-            :max_members="event.max_members"
-            :image="event.image"
+            :members_count="event.members_count"
+            :image_url="event.image_url"
             :status="event.status"
           />
         </div>
@@ -83,6 +83,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import EventCard from '@/Components/UI/EventCard.vue'
 import { ref, computed } from 'vue'
+import { Link } from '@inertiajs/vue3'
 
 // Фильтры
 const filters = [
@@ -99,6 +100,8 @@ const currentPage = ref(1)
 const props = defineProps({
   events: Object
 })
+
+console.log(props.events)
 
 // Фильтрация мероприятий
 const filteredEvents = computed(() => {

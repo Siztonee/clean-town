@@ -6,7 +6,7 @@
         <div class="flex justify-between items-center">
           <h2 class="text-xl font-semibold text-white">Частые вопросы</h2>
           <button
-            @click="showFAQModal = true"
+            @click="openNewFAQ"
             class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white flex items-center transition"
           >
             <svg
@@ -22,24 +22,24 @@
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            Добавить вопрос
+            {{ isEditing ? 'Редактировать' : 'Добавить' }} вопрос
           </button>
         </div>
 
         <!-- Список FAQ -->
         <div class="space-y-4">
           <div
-            v-for="(faq, index) in faqs"
+            v-for="(faqItem, index) in props.faq"
             :key="index"
             class="bg-gray-700/50 rounded-xl p-6"
           >
             <div class="flex justify-between items-start">
               <div class="flex-1">
-                <h3 class="text-lg font-semibold text-white mb-2">{{ faq.question }}</h3>
-                <p class="text-gray-300">{{ faq.answer }}</p>
+                <h3 class="text-lg font-semibold text-white mb-2">{{ faqItem.question }}</h3>
+                <p class="text-gray-300">{{ faqItem.answer }}</p>
               </div>
               <div class="flex space-x-2 ml-4">
-                <button @click="editFAQ(faq)" class="text-blue-400 hover:text-blue-300">
+                <button @click="editFAQ(faqItem)" class="text-blue-400 hover:text-blue-300">
                   <svg
                     class="w-5 h-5"
                     fill="none"
@@ -54,7 +54,7 @@
                     />
                   </svg>
                 </button>
-                <button @click="deleteFAQ(faq)" class="text-red-400 hover:text-red-300">
+                <button @click="deleteFAQ(faqItem)" class="text-red-400 hover:text-red-300">
                   <svg
                     class="w-5 h-5"
                     fill="none"
@@ -83,8 +83,8 @@
       >
         <div class="bg-gray-800 rounded-xl p-6 w-full max-w-2xl">
           <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold text-white">Добавить частый вопрос</h3>
-            <button @click="showFAQModal = false" class="text-gray-400 hover:text-white">
+            <h3 class="text-xl font-bold text-white">{{ isEditing ? 'Редактировать' : 'Добавить' }} частый вопрос</h3>
+            <button @click="closeFAQModal" class="text-gray-400 hover:text-white">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   stroke-linecap="round"
@@ -96,28 +96,30 @@
             </button>
           </div>
 
-          <form @submit.prevent="addFAQ" class="space-y-4">
+          <form @submit.prevent="saveFAQ" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1">Вопрос</label>
+              <label class="block text-sm font-medium text-gray-300 mb-1">Вопрос*</label>
               <input
-                v-model="newFAQ.question"
+                v-model="currentFAQ.question"
                 type="text"
+                required
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-1">Ответ</label>
+              <label class="block text-sm font-medium text-gray-300 mb-1">Ответ*</label>
               <textarea
-                v-model="newFAQ.answer"
+                v-model="currentFAQ.answer"
                 rows="4"
+                required
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
               ></textarea>
             </div>
 
             <div class="flex justify-end space-x-3 pt-4">
               <button
-                @click="showFAQModal = false"
+                @click="closeFAQModal"
                 type="button"
                 class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-300 transition"
               >
@@ -127,7 +129,7 @@
                 type="submit"
                 class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-white transition"
               >
-                Добавить
+                {{ isEditing ? 'Сохранить' : 'Добавить' }}
               </button>
             </div>
           </form>
@@ -138,53 +140,57 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import AdminLayout from "@/Pages/Admin/Layouts/AdminLayout.vue";
+import { router } from '@inertiajs/vue3'
 
-const faqs = ref([
-  {
-    id: 1,
-    question: "Как присоединиться к движению?",
-    answer:
-      "Просто зарегистрируйтесь на нашем сайте и выберите интересующее мероприятие. Никаких специальных требований нет!",
-  },
-  {
-    id: 2,
-    question: "Нужно ли приносить свой инвентарь?",
-    answer:
-      "Нет, мы обеспечиваем всех участников перчатками, мешками и другим необходимым инвентарем.",
-  },
-]);
+const props = defineProps({
+  faq: Array
+});
 
 const showFAQModal = ref(false);
-const newFAQ = ref({ question: "", answer: "" });
+const isEditing = ref(false);
+const currentFAQ = ref({
+  id: null,
+  question: "",
+  answer: ""
+});
 
-function addFAQ() {
-  if (!newFAQ.value.question || !newFAQ.value.answer) return;
-
-  const newItem = {
-    id: Math.max(...faqs.value.map((i) => i.id), 0) + 1,
-    question: newFAQ.value.question,
-    answer: newFAQ.value.answer,
-  };
-
-  faqs.value.push(newItem);
-  resetFAQForm();
-}
-
-function resetFAQForm() {
-  newFAQ.value = { question: "", answer: "" };
-  showFAQModal.value = false;
+function openNewFAQ() {
+  isEditing.value = false
+  currentFAQ.value = {
+    id: null,
+    question: "",
+    answer: ""
+  }
+  showFAQModal.value = true;
 }
 
 function editFAQ(faq) {
-  // Реализация редактирования
-  console.log("Редактировать FAQ:", faq);
+  isEditing.value = true;
+  currentFAQ.value = { ...faq };
+  showFAQModal.value = true;
 }
 
 function deleteFAQ(faq) {
   if (confirm(`Удалить вопрос "${faq.question}"?`)) {
-    faqs.value = faqs.value.filter((f) => f.id !== faq.id);
+    router.delete(`/admin/faq/${faq.id}`)
   }
+}
+
+function saveFAQ() {
+  if (isEditing.value) {
+    router.put(`/admin/faq/${currentFAQ.value.id}`, currentFAQ.value, {
+      onSuccess: () => closeFAQModal()
+    })
+  } else {
+    router.post('/admin/faq', currentFAQ.value, {
+      onSuccess: () => closeFAQModal()
+    })
+  }
+}
+
+function closeFAQModal() {
+  showFAQModal.value = false;
 }
 </script>

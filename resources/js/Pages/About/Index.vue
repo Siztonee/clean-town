@@ -109,11 +109,12 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <TeamMember 
-            v-for="(member, index) in team" 
+            v-for="(member, index) in props.teamMembers" 
             :key="index"
             :name="member.name"
             :role="member.role"
             :bio="member.bio"
+            :profile_url="member.profile_url"
           />
         </div>
       </div>
@@ -127,10 +128,10 @@
           
           <div class="space-y-4">
             <FAQItem 
-              v-for="(faq, index) in faqs" 
+              v-for="(faqItem, index) in faq" 
               :key="index"
-              :question="faq.question"
-              :answer="faq.answer"
+              :question="faqItem.question"
+              :answer="faqItem.answer"
             />
           </div>
         </div>
@@ -143,6 +144,11 @@
 import AppLayout from '@/Layouts/AppLayout.vue'
 import TeamMember from '@/Pages/About/Components/TeamMember.vue'
 import FAQItem from '@/Pages/About/Components/FAQItem.vue'
+
+const props = defineProps({
+  teamMembers: Object,
+  faq: Object
+})
 
 const milestones = [
   {
@@ -164,48 +170,6 @@ const milestones = [
     date: '2022',
     title: 'Федеральный масштаб',
     description: 'Проведены мероприятия в 45 городах России с общим участием 15 000 человек'
-  }
-]
-
-const team = [
-  {
-    name: 'Анна Смирнова',
-    role: 'Основатель',
-    bio: 'Идеолог движения, эколог с 10-летним стажем'
-  },
-  {
-    name: 'Дмитрий Волков',
-    role: 'Координатор',
-    bio: 'Организует мероприятия в 15 регионах'
-  },
-  {
-    name: 'Екатерина Ильина',
-    role: 'PR-менеджер',
-    bio: 'Отвечает за коммуникацию и партнерства'
-  },
-  {
-    name: 'Артем Новиков',
-    role: 'Волонтерский отдел',
-    bio: 'Координирует работу 200+ волонтеров'
-  }
-]
-
-const faqs = [
-  {
-    question: 'Как присоединиться к движению?',
-    answer: 'Просто зарегистрируйтесь на нашем сайте и выберите интересующее мероприятие. Никаких специальных требований нет!'
-  },
-  {
-    question: 'Нужно ли приносить свой инвентарь?',
-    answer: 'Нет, мы обеспечиваем всех участников перчатками, мешками и другим необходимым инвентарем.'
-  },
-  {
-    question: 'Могут ли участвовать дети?',
-    answer: 'Да, мы приветствуем участие семей. Для детей младше 14 лет требуется сопровождение взрослых.'
-  },
-  {
-    question: 'Что делать, если я не могу прийти на мероприятие?',
-    answer: 'Пожалуйста, отмените регистрацию за 24 часа до начала, чтобы ваше место мог занять другой участник.'
   }
 ]
 </script>
