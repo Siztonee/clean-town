@@ -34,6 +34,7 @@
           <EventCard 
             v-for="(event, index) in filteredEvents" 
             :key="index"
+            :id="event.id"
             :title="event.title"
             :starts_at="event.starts_at"
             :location="event.location"
@@ -65,14 +66,14 @@
     <!-- Призыв к действию -->
     <section class="py-20 bg-gradient-to-r from-gray-800 to-emerald-900">
       <div class="container mx-auto px-4 text-center text-white">
-        <h2 class="text-3xl font-bold mb-6">Организуйте свое мероприятие</h2>
+        <h2 class="text-3xl font-bold mb-6">Отправьте предложение</h2>
         <p class="text-xl mb-10 max-w-2xl mx-auto text-emerald-100">
-          Хотите провести уборку в своем районе? Мы поможем с организацией!
+          Хотите предложить место для уборки? Мы рассмотрим ваше предложение!
         </p>
         <Link 
           href="/events/create" 
           class="inline-block px-8 py-4 bg-white text-emerald-700 font-bold rounded-lg text-lg hover:bg-emerald-50 transition shadow-lg">
-          Создать мероприятие
+          Оправить предложение
         </Link>
       </div>
     </section>

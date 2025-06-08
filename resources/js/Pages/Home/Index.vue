@@ -17,11 +17,11 @@
                 class="px-8 py-4 bg-emerald-600 text-white font-bold rounded-lg text-lg hover:bg-emerald-500 transition-all shadow-lg hover:shadow-emerald-500/20 transform hover:-translate-y-0.5">
                 Стать волонтером
               </router-link>
-              <router-link 
-                to="/events" 
+              <Link 
+                href="/events" 
                 class="px-8 py-4 bg-gray-800 border border-gray-700 text-white font-bold rounded-lg text-lg hover:bg-gray-700 transition">
                 Смотреть мероприятия
-              </router-link>
+              </Link>
             </div>
           </div>
 
@@ -40,10 +40,13 @@
     <section class="py-16 bg-gray-800">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <StatCard number="128" label="Проведенных мероприятий" icon="calendar" />
-          <StatCard number="5,200+" label="Участников" icon="users" />
-          <StatCard number="42" label="Тонн мусора собрано" icon="trash" />
-          <StatCard number="18" label="Районов охвачено" icon="map" />
+          <StatCard
+            v-for="(stat, index) in stats" 
+            :key="index"
+            :number="stat.number" 
+            :label="stat.label" 
+            :icon="stat.icon" 
+           />
         </div>
       </div>
     </section>
@@ -53,30 +56,21 @@
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center mb-12">
           <h2 class="text-3xl font-bold text-white">Ближайшие мероприятия</h2>
-          <router-link to="/events" class="text-emerald-400 font-medium hover:text-emerald-300 transition">
+          <Link href="/events" class="text-emerald-400 font-medium hover:text-emerald-300 transition">
             Все мероприятия →
-          </router-link>
+          </Link>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <EventCard 
-            title="Уборка Центрального парка"
-            date="15 сентября, 10:00"
-            location="Центральный парк культуры"
-            participants="Осталось 12 мест"
-          />
-          <EventCard 
-            title="Эко-забег вдоль реки"
-            date="18 сентября, 9:30"
-            location="Набережная реки Волга"
-            participants="Осталось 5 мест"
-            :featured="true"
-          />
-          <EventCard 
-            title="Субботник в Северном районе"
-            date="22 сентября, 11:00"
-            location="Лесопарк 'Северный'"
-            participants="Осталось 24 места"
+            v-for="(event, index) in upcomingEvents" 
+            :key="index"
+            :title="event.title"
+            :starts_at="event.starts_at"
+            :location="event.location"
+            :members_count="event.members_count"
+            :image_url="event.image_url"
+            :status="event.status"
           />
         </div>
       </div>
@@ -119,15 +113,17 @@
     <!-- Галерея -->
     <section class="py-20 bg-gray-900">
       <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-12 text-white">Наша деятельность</h2>
+        <h2 class="text-3xl font-bold text-center mb-12 text-white">Недавно добавленные галереи</h2>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <GalleryImage />
-          <GalleryImage class="lg:row-span-2 lg:col-span-2" />
-          <GalleryImage />
-          <GalleryImage />
-          <GalleryImage />
-          <GalleryImage class="sm:col-span-2" />
+          <GalleryImage 
+            v-for="(gallery, index) in recentGalleries"
+            :key="index"
+            :additional-classes="gallery.classes"
+            :title="gallery.title"
+            :preview_url="gallery.preview_url"
+            :date="gallery.date"
+          />
         </div>
       </div>
     </section>
@@ -139,11 +135,11 @@
         <p class="text-xl mb-10 max-w-2xl mx-auto text-emerald-100">
           Присоединяйтесь к нашему следующему мероприятию и станьте частью позитивных изменений
         </p>
-        <router-link 
-          to="/events" 
+        <Link 
+          href="/events" 
           class="inline-block px-8 py-4 bg-emerald-600 text-white font-bold rounded-lg text-lg hover:bg-emerald-500 transition shadow-lg hover:shadow-emerald-500/30">
           Выбрать мероприятие
-        </router-link>
+        </Link>
       </div>
     </section>
   </AppLayout>
@@ -156,4 +152,11 @@ import EventCard from '@/Components/UI/EventCard.vue'
 import StepCard from '@/Pages/Home/Components/StepCard.vue'
 import StatCard from '@/Pages/Home/Components/StatCard.vue'
 import GalleryImage from '@/Components/UI/GalleryImage.vue'
+import { Link } from '@inertiajs/vue3'
+
+const props = defineProps({
+  'stats': Object,
+  'upcomingEvents': Object,
+  'recentGalleries': Object
+})
 </script>

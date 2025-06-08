@@ -72,7 +72,7 @@
           <!-- Точки на временной линии -->
           <div class="flex flex-col space-y-12">
             <div 
-              v-for="(milestone, index) in milestones" 
+              v-for="(milestone, index) in histories" 
               :key="index"
               :class="[
                 'relative flex items-center',
@@ -147,7 +147,8 @@ import FAQItem from '@/Pages/About/Components/FAQItem.vue'
 
 const props = defineProps({
   teamMembers: Object,
-  faq: Object
+  faq: Object,
+  histories: Object
 })
 
 const milestones = [

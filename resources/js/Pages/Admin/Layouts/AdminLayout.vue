@@ -1,14 +1,12 @@
 <template>
   <div class="min-h-screen bg-gray-900 text-gray-100">
     <!-- Боковое меню -->
-    <div class="fixed inset-y-0 left-0 w-64 bg-gray-800 p-6 shadow-xl">
+    <div 
+      class="fixed inset-y-0 left-0 w-64 bg-gray-800 p-6 shadow-xl transform transition-transform duration-300 z-30 lg:translate-x-0"
+      :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    >
       <div class="flex items-center space-x-2 mb-12">
-        <svg
-          class="w-8 h-8 text-emerald-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -49,33 +47,40 @@
       </nav>
     </div>
 
-    <div class="ml-64 p-8">
-      <!-- Хедер -->
-      <header class="mb-8 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-white">{{ props.title }}</h1>
-        <div class="flex items-center space-x-4">
-          <button
-            class="p-2 rounded-full text-gray-400 hover:bg-gray-800 hover:text-white"
+    <!-- Оверлей для мобильного меню -->
+    <div 
+      v-if="isSidebarOpen"
+      @click="isSidebarOpen = false"
+      class="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
+    ></div>
+
+    <div class="lg:ml-64 p-4 lg:p-8">
+
+      <header class="mb-6 lg:mb-8 flex justify-between items-center">
+        <div class="flex items-center">
+          <button @click="isSidebarOpen = !isSidebarOpen"
+            class="lg:hidden p-2 mr-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
           </button>
-          <div class="flex items-center space-x-3">
-            <div
-              class="h-10 w-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-medium"
-            >
+          <h1 class="text-xl lg:text-2xl font-bold text-white">{{ props.title }}</h1>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <div class="h-10 w-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-medium">
               A
             </div>
             <span class="hidden md:block">Администратор</span>
-          </div>
         </div>
       </header>
+
       <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
         <slot :active-tab="activeTab"></slot>
       </div>
@@ -84,13 +89,28 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { Link } from '@inertiajs/vue3'
+import { ref, onMounted, onUnmounted } from "vue";
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
   title: String,
   activeTab: String
 })
+
+const isSidebarOpen = ref(false);
+
+const checkScreenSize = () => {
+  isSidebarOpen.value = window.innerWidth >= 1024;
+};
+
+onMounted(() => {
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkScreenSize);
+});
 
 const tabs = [
   {
@@ -130,6 +150,20 @@ const tabs = [
     icon: "text-purple-400",
     iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
     url: "/admin/faq"
+  },
+  {
+    id: "stats",
+    title: "Stats",
+    icon: "text-purple-400",
+    iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    url: "/admin/stats"
+  },
+  {
+    id: "history",
+    title: "History",
+    icon: "text-purple-400",
+    iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    url: "/admin/history"
   },
 ];
 
