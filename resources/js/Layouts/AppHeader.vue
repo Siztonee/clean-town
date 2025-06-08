@@ -31,7 +31,7 @@
             О нас
           </Link>
           <Link 
-            href="/join" 
+            href="/register" 
             class="ml-2 px-5 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 font-medium transition shadow-md hover:shadow-emerald-500/30">
             Присоединиться
           </Link>

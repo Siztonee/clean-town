@@ -24,6 +24,7 @@
                 <input 
                   type="text" 
                   id="username"
+                  v-model="form.username"
                   class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
                   placeholder="Придумайте имя"
                   autocomplete="off"
@@ -33,16 +34,17 @@
 
             <!-- Поле: Email или телефон -->
             <div class="mb-5">
-              <label for="emailOrPhone" class="block text-gray-300 mb-2 text-sm font-medium">Email или телефон</label>
+              <label for="emailOrPhone" class="block text-gray-300 mb-2 text-sm font-medium">Номер телефона</label>
               <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <i class="fa fa-at text-gray-500"></i>
+                  <i class="fa fa-phone text-gray-500"></i>
                 </div>
                 <input 
                   type="text" 
-                  id="emailOrPhone"
+                  id="phone"
+                  v-model="form.phone"
                   class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
-                  placeholder="example@mail.com"
+                  placeholder="+996-xxx-xxx-xxx"
                   autocomplete="off"
                 >
               </div>
@@ -58,6 +60,7 @@
                 <input 
                   type="password" 
                   id="password"
+                  v-model="form.password"
                   class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
                   placeholder="Не менее 8 символов"
                 >
@@ -112,7 +115,7 @@
         <!-- Ссылка на вход -->
         <div class="bg-gray-900 px-8 py-5 text-center">
           <span class="text-gray-400">Уже зарегистрированы?</span>
-          <a href="#" class="text-emerald-400 hover:text-emerald-300 font-medium ml-2 transition-colors">Войти в аккаунт</a>
+          <Link href="/login" class="text-emerald-400 hover:text-emerald-300 font-medium ml-2 transition-colors">Войти в аккаунт</Link>
         </div>
       </div>
     </div>
@@ -120,9 +123,17 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import { router, Link } from '@inertiajs/vue3'
+
+const form = ref({
+    username: '',
+    phone: '',
+    password: ''
+})
+
 const register = () => {
-  // Логика регистрации
-  console.log('Регистрация...')
+  router.post('/register', form.value)
 }
 </script>
 
