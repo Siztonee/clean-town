@@ -21,9 +21,10 @@ class LoginController extends Controller
         $validated = $request->validated();
 
         if(Auth::attempt($validated)) {
+            $request->session()->regenerate();
             return redirect()->route('home.index');
-        } else {
-            return back();
-        }
+        } 
+
+        return back();
     }
 }

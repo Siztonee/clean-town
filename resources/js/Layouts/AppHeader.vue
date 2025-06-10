@@ -30,7 +30,12 @@
             active-class="text-emerald-400 font-semibold bg-gray-700">
             О нас
           </Link>
-          <Link 
+          <div v-if="currentUser"
+            href="#" 
+            class="ml-2 px-5 py-2 bg-gray-600 text-white rounded-full hover:bg-emerald-500 font-medium transition shadow-md hover:shadow-emerald-500/30">
+            {{ currentUser.username }}
+          </div>
+          <Link v-else
             href="/register" 
             class="ml-2 px-5 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 font-medium transition shadow-md hover:shadow-emerald-500/30">
             Присоединиться
@@ -74,7 +79,13 @@
             @click="isMenuOpen = false">
             О нас
           </Link>
-          <Link 
+          <div v-if="currentUser"
+            href="/join" 
+            class="block mt-4 py-3 px-4 bg-gray-600 text-white text-center rounded-full font-medium shadow-md hover:bg-emerald-500 transition"
+            @click="isMenuOpen = false">
+            {{ currentUser.username }}
+          </div>
+          <Link v-else
             href="/join" 
             class="block mt-4 py-3 px-4 bg-emerald-600 text-white text-center rounded-full font-medium shadow-md hover:bg-emerald-500 transition"
             @click="isMenuOpen = false">
@@ -87,10 +98,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import logo from '~images/logo.png'
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 
+const { props } = usePage()
+const currentUser = computed(() => props.auth.user)
 const isMenuOpen = ref(false)
 </script>
 

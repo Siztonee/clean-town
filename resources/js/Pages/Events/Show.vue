@@ -147,24 +147,21 @@ const isParticipating = ref(props.initialParticipation)
 const toggleParticipation = () => {
   isParticipating.value = !isParticipating.value
   
-  // Здесь будет вызов API для сохранения состояния
-  router.post(
-    isParticipating.value 
-      ? `/events/${props.event.id}/join` 
-      : `/events/${props.event.id}/leave`,
-    {},
-    {
+  if (isParticipating.value) {
+    router.post(`/events/${props.event.id}/join`, {}, {
       preserveScroll: true,
       onSuccess: () => {
-        // Обновляем счетчик участников
-        if (isParticipating.value) {
           props.event.members_count++
-        } else {
-          props.event.members_count--
-        }
       }
-    }
-  )
+    })
+  } else{
+    router.delete(`/events/${props.event.id}/leave`, {}, {
+      preserveScroll: true,
+      onSuccess: () => {
+          props.event.members_count--
+      }
+    })
+  }
 }
 
 // Форматирование даты и времени

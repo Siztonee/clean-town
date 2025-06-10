@@ -12,11 +12,11 @@
               Присоединяйтесь к волонтерам CleanTown для уборки парков, пляжей и городских территорий
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
-              <router-link 
-                to="/join" 
+              <a 
+                href="#choose-event"
                 class="px-8 py-4 bg-emerald-600 text-white font-bold rounded-lg text-lg hover:bg-emerald-500 transition-all shadow-lg hover:shadow-emerald-500/20 transform hover:-translate-y-0.5">
                 Стать волонтером
-              </router-link>
+              </a>
               <Link 
                 href="/events" 
                 class="px-8 py-4 bg-gray-800 border border-gray-700 text-white font-bold rounded-lg text-lg hover:bg-gray-700 transition">
@@ -129,7 +129,7 @@
     </section>
 
     <!-- Призыв к действию -->
-    <section class="py-20 bg-gradient-to-r from-gray-800 to-emerald-900 text-white">
+    <section id="choose-event" class="py-20 bg-gradient-to-r from-gray-800 to-emerald-900 text-white">
       <div class="container mx-auto px-4 text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-6">Готовы сделать первый шаг?</h2>
         <p class="text-xl mb-10 max-w-2xl mx-auto text-emerald-100">
