@@ -6,46 +6,39 @@
         <div class="text-center max-w-3xl mx-auto mb-16">
           <h1 class="text-4xl md:text-5xl font-bold mb-6">Галерея мероприятий</h1>
           <p class="text-xl text-gray-300">
-            Фотографии с наших экологических акций, субботников и мероприятий. 
+            Фотографии с наших экологических акций, субботников и мероприятий.
             Увидьте, как волонтеры CleanTown делают город чище!
           </p>
         </div>
 
         <!-- Галерея -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <GalleryImage 
-            v-for="(gallery, index) in props.galleries"
-            :key="index"
+          <GalleryImage
+            v-for="(gallery, index) in galleries.data"
+            :key="gallery.id"
+            :id="gallery.id"
             :additional-classes="gallery.classes"
             :title="gallery.title"
             :preview_url="gallery.preview_url"
             :date="gallery.date"
+            class="gallery-item"
+            :style="{ animationDelay: `${index * 0.1}s` }"
           />
         </div>
 
-        <!-- Пагинация -->
-        <div class="flex justify-center mt-16">
-          <div class="flex items-center space-x-2">
-            <button class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 transition">
-              &lt;
-            </button>
-            <button 
-              v-for="page in 4"
-              :key="page"
-              class="w-10 h-10 flex items-center justify-center rounded-full transition"
-              :class="[
-                page === 1 
-                  ? 'bg-emerald-600 text-white' 
-                  : 'bg-gray-800 hover:bg-gray-700'
-              ]"
-            >
-              {{ page }}
-            </button>
-            <button class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-gray-700 transition">
-              &gt;
-            </button>
+        <!-- Сообщение если нет изображений -->
+        <div v-if="!galleries.data.length" class="text-center py-12">
+          <div class="text-gray-400 text-lg">
+            Изображения в галерее пока не добавлены
           </div>
         </div>
+
+        <!-- Пагинация -->
+        <Pagination 
+          :pagination-data="galleries"
+          route-name="gallery"
+          items-label="изображений"
+        />
       </div>
     </section>
   </AppLayout>
@@ -54,12 +47,11 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import GalleryImage from '@/Components/UI/GalleryImage.vue'
-import { ref } from 'vue'
+import Pagination from '@/Components/UI/Pagination.vue'
 
 const props = defineProps({
   galleries: Object
 })
-
 </script>
 
 <style scoped>

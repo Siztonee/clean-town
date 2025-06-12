@@ -13,10 +13,10 @@
             <button 
               v-for="(filter, index) in filters" 
               :key="index"
-              @click="activeFilter = filter.value"
+              @click="changeFilter(filter.value)"
               :class="[
                 'px-5 py-2.5 rounded-full font-medium transition',
-                activeFilter === filter.value 
+                currentStatus === filter.value 
                   ? 'bg-emerald-600 text-white shadow-md' 
                   : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               ]">
@@ -32,8 +32,8 @@
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <EventCard 
-            v-for="(event, index) in filteredEvents" 
-            :key="index"
+            v-for="event in events.data" 
+            :key="event.id"
             :id="event.id"
             :title="event.title"
             :starts_at="event.starts_at"
@@ -44,22 +44,20 @@
           />
         </div>
 
-        <!-- Пагинация -->
-        <div class="mt-12 flex justify-center">
-          <div class="flex space-x-2">
-            <button 
-              v-for="page in 5" 
-              :key="page"
-              :class="[
-                'w-10 h-10 rounded-full flex items-center justify-center font-medium',
-                currentPage === page 
-                  ? 'bg-emerald-600 text-white' 
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-              ]">
-              {{ page }}
-            </button>
+        <!-- Сообщение если нет мероприятий -->
+        <div v-if="!events.data.length" class="text-center py-12">
+          <div class="text-gray-400 text-lg">
+            Мероприятий с выбранным фильтром не найдено
           </div>
         </div>
+
+        <!-- Пагинация -->
+        <Pagination 
+          :pagination-data="events"
+          route-name="events"
+          :query-params="{ status: currentStatus }"
+          items-label="мероприятий"
+        />
       </div>
     </section>
 
@@ -73,7 +71,7 @@
         <Link 
           href="/events/create" 
           class="inline-block px-8 py-4 bg-white text-emerald-700 font-bold rounded-lg text-lg hover:bg-emerald-50 transition shadow-lg">
-          Оправить предложение
+          Отправить предложение
         </Link>
       </div>
     </section>
@@ -83,30 +81,23 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import EventCard from '@/Components/UI/EventCard.vue'
-import { ref, computed } from 'vue'
-import { Link } from '@inertiajs/vue3'
-
-// Фильтры
-const filters = [
-  { label: 'Все', value: 'all' },
-  { label: 'Предстоящие', value: 'upcoming' },
-  { label: 'Текущие', value: 'active' },
-  { label: 'Завершенные', value: 'completed' },
-  { label: 'Мои мероприятия', value: 'my' }
-]
-
-const activeFilter = ref('upcoming')
-const currentPage = ref(1)
+import Pagination from '@/Components/UI/Pagination.vue'
+import { Link, router } from '@inertiajs/vue3'
 
 const props = defineProps({
-  events: Object
+  events: Object,
+  currentStatus: String,
+  filters: Array
 })
 
-console.log(props.events)
-
-// Фильтрация мероприятий
-const filteredEvents = computed(() => {
-  if (activeFilter.value === 'all') return props.events
-  return props.events.filter(event => event.status === activeFilter.value)
-})
+// Функция для изменения фильтра
+const changeFilter = (status) => {
+  router.get('/events', 
+    { status: status, page: 1 }, 
+    { 
+      preserveState: true,
+      replace: true 
+    }
+  )
+}
 </script>

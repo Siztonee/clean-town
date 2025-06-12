@@ -1,4 +1,5 @@
 <template>
+  <Link :href="`/gallery/${id}`"> 
   <div :class="['relative overflow-hidden rounded-xl group h-64', additionalClasses]">
     <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" 
          :style="{ backgroundImage: `url(${preview_url})` } "></div>
@@ -9,14 +10,18 @@
       </div>
     </div>
   </div>
+  </Link>
 </template>
 
 <script setup>
+import { Link } from '@inertiajs/vue3'
+
 defineProps({
   additionalClasses: {
     type: String,
     default: ''
   },
+  id: Number,
   title: String,
   preview_url: String,
   date: String,

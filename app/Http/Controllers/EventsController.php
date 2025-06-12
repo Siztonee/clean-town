@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\EventMemberService;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\EventResource;
 use Illuminate\Http\RedirectResponse;
 
 class EventsController extends Controller
@@ -17,10 +18,30 @@ class EventsController extends Controller
         private EventMemberService $eventMemberService
     ) {}
 
-    public function index(): \Inertia\Response
+    public function index(Request $request): \Inertia\Response
     {
+        $perPage = 2;
+        $status = $request->get('status', 'upcoming'); 
+        
+        $query = Event::withCount('members');
+        
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+        
+        $events = $query->paginate($perPage);
+        
+        $events->appends($request->query());
+        
         return Inertia::render('Events/Index', [
-            'events' => Event::withCount('members')->get()
+            'events' => $events,
+            'currentStatus' => $status,
+            'filters' => [
+                ['label' => 'Все', 'value' => 'all'],
+                ['label' => 'Предстоящие', 'value' => 'upcoming'],
+                ['label' => 'Текущие', 'value' => 'active'],
+                ['label' => 'Завершенные', 'value' => 'completed'],
+            ]
         ]);
     }
 

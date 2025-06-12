@@ -15,6 +15,7 @@
         <!-- Сетка галереи -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div v-for="(gallery, index) in galleries" :key="index" class="relative group">
+          <Link :href="`/admin/gallery/${gallery.id}`">
             <img :src="gallery.preview_url" :alt="gallery.title" class="w-full h-40 object-cover rounded-lg">
             <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center space-x-3">
             <button @click="editGalleryItem(gallery)" class="p-2 bg-emerald-600/80 rounded-full hover:bg-emerald-500">
@@ -28,6 +29,7 @@
                 </svg>
             </button>
             </div>
+          </Link>
         </div>
         </div>
     </div>
@@ -108,7 +110,7 @@
 <script setup>
 import { ref } from 'vue'
 import AdminLayout from '@/Pages/Admin/Layouts/AdminLayout.vue'
-import { router } from '@inertiajs/vue3'
+import { router, Link } from '@inertiajs/vue3'
 
 const props = defineProps({
   galleries: Array
@@ -176,11 +178,11 @@ function saveGallery() {
   
   if (isEditing.value) {
     formData.append('_method', 'PUT')
-    router.post(`/admin/gallery/${currentGallery.value.id}`, formData, {
+    router.post(`/admin/galleries/${currentGallery.value.id}`, formData, {
       onSuccess: () => closeGalleryModal()
     })
   } else {
-    router.post('/admin/gallery', formData, {
+    router.post('/admin/galleries', formData, {
       onSuccess: () => closeGalleryModal()
     })
   }

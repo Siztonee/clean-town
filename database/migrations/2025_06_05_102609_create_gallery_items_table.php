@@ -19,7 +19,10 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->string('media');
+            $table->string('type');
+            $table->string('path');
+            
+            $table->integer('size');
 
             $table->timestamps();
         });

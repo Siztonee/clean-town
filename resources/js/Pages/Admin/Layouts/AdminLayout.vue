@@ -6,14 +6,7 @@
       :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <div class="flex items-center space-x-2 mb-12">
-        <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-          />
-        </svg>
+        <i class="fas fa-leaf text-emerald-500 text-2xl"></i>
         <span class="text-xl font-bold text-white">CleanTown Admin</span>
       </div>
 
@@ -29,19 +22,7 @@
               : 'text-gray-300 hover:bg-gray-700',
           ]"
         >
-          <svg
-            :class="['w-5 h-5 mr-3', tab.icon]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              :d="tab.iconPath"
-            />
-          </svg>
+          <i :class="[tab.faIcon, 'mr-3 text-xl', tab.icon]"></i>
           {{ tab.title }}
         </Link>
       </nav>
@@ -61,21 +42,14 @@
           <button @click="isSidebarOpen = !isSidebarOpen"
             class="lg:hidden p-2 mr-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white"
           >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+            <i class="fas fa-bars text-xl"></i>
           </button>
           <h1 class="text-xl lg:text-2xl font-bold text-white">{{ props.title }}</h1>
         </div>
         
         <div class="flex items-center space-x-4">
             <div class="h-10 w-10 rounded-full bg-emerald-500 flex items-center justify-center text-white font-medium">
-              A
+              <i class="fas fa-user-shield"></i>
             </div>
             <span class="hidden md:block">Администратор</span>
         </div>
@@ -117,52 +91,49 @@ const tabs = [
     id: "dashboard",
     title: "Главная",
     icon: "text-emerald-400",
-    iconPath:
-      "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
+    faIcon: "fas fa-home",
     url: "/admin"
   },
   {
     id: "events",
     title: "Мероприятия",
-    icon: "text-emerald-400",
-    iconPath:
-      "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
+    icon: "text-amber-400",
+    faIcon: "fas fa-calendar-check",
     url: "/admin/events"
   },
   {
     id: "gallery",
     title: "Галерея",
-    icon: "text-blue-400",
-    iconPath:
-      "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z",
-    url: "/admin/gallery"
+    icon: "text-sky-400",
+    faIcon: "fas fa-images",
+    url: "/admin/galleries"
   },
   {
     id: "teamMembers",
     title: "Команда",
-    icon: "text-purple-400",
-    iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    icon: "text-violet-400",
+    faIcon: "fas fa-users",
     url: "/admin/team-members"
   },
   {
     id: "faq",
     title: "FAQ",
-    icon: "text-purple-400",
-    iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    icon: "text-rose-400",
+    faIcon: "fas fa-question-circle",
     url: "/admin/faq"
   },
   {
     id: "stats",
-    title: "Stats",
-    icon: "text-purple-400",
-    iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    title: "Статистика",
+    icon: "text-cyan-400",
+    faIcon: "fas fa-chart-line",
     url: "/admin/stats"
   },
   {
     id: "history",
-    title: "History",
-    icon: "text-purple-400",
-    iconPath: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    title: "История",
+    icon: "text-yellow-400",
+    faIcon: "fas fa-landmark",
     url: "/admin/history"
   },
 ];

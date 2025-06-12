@@ -11,8 +11,23 @@ class GalleryController extends Controller
 {
     public function index(): \Inertia\Response
     {
+        $perPage = 2; 
+        
+        $galleries = Gallery::orderBy('created_at', 'desc')
+            ->paginate($perPage);
+        
         return Inertia::render('Gallery/Index', [
-            'galleries' => Gallery::all()
+            'galleries' => $galleries
+        ]);
+    }
+
+    public function show(int $gallery_id): \Inertia\Response
+    {
+        $gallery = Gallery::findOrFail($gallery_id);
+
+        return Inertia::render('Gallery/Show', [
+            'gallery' => $gallery,
+            'gallery_items' => $gallery->items
         ]);
     }
 }
