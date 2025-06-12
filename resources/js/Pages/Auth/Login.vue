@@ -100,15 +100,15 @@
             </div>
 
             <!-- Кнопка Google -->
-            <Link 
-              href="/login-google"
+            <a 
+              href="/login/google/redirect"
               class="w-full flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white py-3.5 rounded-lg transition-all duration-200 mb-6"
             >
               <div class="bg-white w-6 h-6 rounded-full flex items-center justify-center mr-3">
                 <i class="fa-brands fa-google text-red-500 text-xs"></i>
               </div>
               <span class="font-medium">Google</span>
-            </Link>
+            </a>
 
             <!-- Сообщение об ошибке -->
             <div v-if="hasErrors" class="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">

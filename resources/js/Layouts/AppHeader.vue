@@ -80,13 +80,12 @@
             О нас
           </Link>
           <div v-if="currentUser"
-            href="/join" 
             class="block mt-4 py-3 px-4 bg-gray-600 text-white text-center rounded-full font-medium shadow-md hover:bg-emerald-500 transition"
             @click="isMenuOpen = false">
             {{ currentUser.username }}
           </div>
           <Link v-else
-            href="/join" 
+            href="/register" 
             class="block mt-4 py-3 px-4 bg-emerald-600 text-white text-center rounded-full font-medium shadow-md hover:bg-emerald-500 transition"
             @click="isMenuOpen = false">
             Присоединиться

@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\Admin;
 
 use App\Models\Stat;
 

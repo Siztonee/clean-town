@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Stat;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use App\Services\StatService;
+use App\Services\Admin\StatService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StatStoreRequest;
 use App\Http\Requests\StatUpdateRequest;
 
-class StatsController extends Controller
+class StatsBoardController extends Controller
 {
     public function __construct(
         private StatService $statService

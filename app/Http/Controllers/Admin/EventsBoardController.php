@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Models\Event;
 use Illuminate\Http\Request;
-use App\Services\EventService;
 use App\Http\Controllers\Controller;
+use App\Services\Admin\EventService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\EventStoreRequest;
 use App\Http\Requests\EventUpdateRequest;
 
-class EventsController extends Controller
+class EventsBoardController extends Controller
 {
     public function __construct(
         private EventService $eventService

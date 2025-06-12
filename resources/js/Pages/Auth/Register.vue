@@ -93,15 +93,15 @@
             </div>
 
             <!-- Кнопка Google -->
-            <button 
-              type="button"
+            <a
+              href="/login/google/redirect"
               class="w-full flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white py-3.5 rounded-lg transition-all duration-200 mb-6"
             >
               <div class="bg-white w-6 h-6 rounded-full flex items-center justify-center mr-3">
                 <i class="fa-brands fa-google text-red-500"></i>
               </div>
               <span class="font-medium">Продолжить с Google</span>
-            </button>
+            </a>
 
             <!-- Соглашение -->
             <p class="text-xs text-gray-500 text-center">

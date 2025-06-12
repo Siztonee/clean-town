@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\FAQBoardController;
 use App\Http\Controllers\Admin\DashBoardController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Admin\StatsBoardController;
 use App\Http\Controllers\Admin\EventsBoardController;
 use App\Http\Controllers\Admin\GalleryBoardController;
@@ -18,8 +19,8 @@ use App\Http\Controllers\Admin\TeamMembersBoardController;
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/events', [EventsController::class, 'index']);
 Route::get('/events/{event}', [EventsController::class, 'show']);
-Route::post('/events/{event}/join', [EventsController::class, 'store']);
-Route::delete('/events/{event}/leave', [EventsController::class, 'destory']);
+Route::post('/events/{event_id}/join', [EventsController::class, 'store']);
+Route::delete('/events/{event}/leave', [EventsController::class, 'destroy']);
 Route::get('/gallery', [GalleryController::class, 'index']);
 Route::get('/about', [AboutController::class, 'index']);
 
@@ -28,6 +29,8 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register.in
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 Route::get('/login', [LoginController::class, 'index'])->name('login.index');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+Route::get('/login/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
+Route::get('/login/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 
 
 Route::prefix('admin')->group(function() {

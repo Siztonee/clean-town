@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
-use App\Services\GalleryService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use App\Services\Admin\GalleryService;
 use App\Http\Requests\GalleryStoreRequest;
 use App\Http\Requests\GalleryUpdateRequest;
 
-class GalleryController extends Controller
+class GalleryBoardController extends Controller
 {
     public function __construct(
         private GalleryService $galleryService

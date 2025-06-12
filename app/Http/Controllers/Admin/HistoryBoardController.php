@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Models\History;
 use Illuminate\Http\Request;
-use App\Services\HistoryService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use App\Services\Admin\HistoryService;
 use App\Http\Requests\HistoryStoreRequest;
 use App\Http\Requests\HistoryUpdateRequest;
 
-class HistoryController extends Controller
+class HistoryBoardController extends Controller
 {
     public function __construct(
         private HistoryService $historyService

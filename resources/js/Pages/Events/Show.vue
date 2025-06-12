@@ -28,17 +28,17 @@
             <div class="mt-8 flex flex-wrap items-center gap-4">
               <!-- Кнопка участия -->
               <button 
-                @click="toggleParticipation"
+                @click="toggleMembership"
                 :class="[
                   'px-8 py-3 rounded-lg font-bold flex items-center transition-all shadow-lg',
-                  isParticipating 
+                  isMembership 
                     ? 'bg-gray-700 hover:bg-gray-600 text-white' 
                     : 'bg-emerald-500 hover:bg-emerald-600 text-gray-900'
                 ]"
               >
-                <i v-if="!isParticipating" class="fa fa-user-plus w-5 h-5 mr-2"></i>
+                <i v-if="!isMembership" class="fa fa-user-plus w-5 h-5 mr-2"></i>
                 <i v-else class="fa fa-user-minus w-5 h-5 mr-2"></i>
-                {{ isParticipating ? 'Отменить участие' : 'Участвовать' }}
+                {{ isMembership ? 'Отменить участие' : 'Участвовать' }}
               </button>
               
               <div class="flex items-center bg-gray-800 bg-opacity-70 px-4 py-2 rounded-lg text-gray-200">
@@ -137,30 +137,37 @@ import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
   event: Object,
-  initialParticipation: Boolean
+  initialMembership: Boolean
 })
 
-// Состояние участия
-const isParticipating = ref(props.initialParticipation)
+const isMembership = ref(props.initialMembership)
+const isProcessing = ref(false) // Флаг для блокировки кнопки
 
-// Метод переключения участия
-const toggleParticipation = () => {
-  isParticipating.value = !isParticipating.value
+const toggleMembership = async () => {
+  if (isProcessing.value) return
   
-  if (isParticipating.value) {
-    router.post(`/events/${props.event.id}/join`, {}, {
-      preserveScroll: true,
-      onSuccess: () => {
-          props.event.members_count++
-      }
-    })
-  } else{
-    router.delete(`/events/${props.event.id}/leave`, {}, {
-      preserveScroll: true,
-      onSuccess: () => {
-          props.event.members_count--
-      }
-    })
+  isProcessing.value = true
+  const newMembershipState = !isMembership.value
+  
+  try {
+    if (newMembershipState) {
+      await router.post(`/events/${props.event.id}/join`, {}, {
+        preserveScroll: true,
+        onSuccess: () => {
+          // Не изменяем props напрямую!
+          isMembership.value = true
+        }
+      })
+    } else {
+      await router.delete(`/events/${props.event.id}/leave`, {
+        preserveScroll: true,
+        onSuccess: () => {
+          isMembership.value = false
+        }
+      })
+    }
+  } finally {
+    isProcessing.value = false
   }
 }
 

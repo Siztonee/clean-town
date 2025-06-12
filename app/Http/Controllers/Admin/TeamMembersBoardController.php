@@ -6,12 +6,12 @@ use Inertia\Inertia;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\TeamMembersService;
 use Illuminate\Http\RedirectResponse;
+use App\Services\Admin\TeamMembersService;
 use App\Http\Requests\TeamMemberStoreRequest;
 use App\Http\Requests\TeamMemberUpdateRequest;
 
-class TeamMembersController extends Controller
+class TeamMembersBoardController extends Controller
 {
     public function __construct(
         private TeamMembersService $teamMemberService

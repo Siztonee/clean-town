@@ -65,6 +65,7 @@
           <EventCard 
             v-for="(event, index) in upcomingEvents" 
             :key="index"
+            :id="event.id"
             :title="event.title"
             :starts_at="event.starts_at"
             :location="event.location"

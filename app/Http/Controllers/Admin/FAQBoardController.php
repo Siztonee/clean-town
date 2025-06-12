@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use App\Models\FAQItem;
-use App\Services\FAQService;
 use Illuminate\Http\Request;
+use App\Services\Admin\FAQService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\FAQItemStoreRequest;
 use App\Http\Requests\FAQItemUpdateRequest;
 
-class FAQController extends Controller
+class FAQBoardController extends Controller
 {
 
     public function __construct(
