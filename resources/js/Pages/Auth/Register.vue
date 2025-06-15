@@ -32,7 +32,7 @@
               </div>
             </div>
 
-            <!-- Поле: Email или телефон -->
+            <!-- Поле: Номер телефона -->
             <div class="mb-5">
               <label for="emailOrPhone" class="block text-gray-300 mb-2 text-sm font-medium">Номер телефона</label>
               <div class="relative">
@@ -58,22 +58,39 @@
                   <i class="fa fa-lock text-gray-500"></i>
                 </div>
                 <input 
-                  type="password" 
+                  :type="showPassword ? 'text' : 'password'" 
                   id="password"
                   v-model="form.password"
                   class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
                   placeholder="Не менее 8 символов"
                 >
-                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-300">
-                  <i class="fa fa-eye"></i>
+                <button 
+                  type="button" 
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-300"
+                  @click="showPassword = !showPassword"
+                >
+                  <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
                 </button>
               </div>
               <div class="mt-2 flex items-center">
-                <div class="w-1/4 h-1 bg-gray-700 rounded mr-1"></div>
-                <div class="w-1/4 h-1 bg-gray-700 rounded mr-1"></div>
-                <div class="w-1/4 h-1 bg-gray-700 rounded mr-1"></div>
-                <div class="w-1/4 h-1 bg-gray-700 rounded"></div>
-                <span class="text-xs text-gray-500 ml-2">Сложность пароля</span>
+                <div 
+                  v-for="i in 4" 
+                  :key="i"
+                  class="w-1/4 h-1 rounded mr-1"
+                  :class="{
+                    [passwordStrength.color]: i <= passwordStrength.level,
+                    'bg-gray-700': i > passwordStrength.level
+                  }"
+                ></div>
+                <span class="text-xs ml-2" :class="{
+                  'text-red-500': passwordStrength.level === 1,
+                  'text-orange-500': passwordStrength.level === 2,
+                  'text-yellow-500': passwordStrength.level === 3,
+                  'text-green-500': passwordStrength.level >= 4,
+                  'text-gray-500': passwordStrength.level === 0
+                }">
+                  {{ passwordStrength.text || 'Сложность пароля' }}
+                </span>
               </div>
             </div>
 
@@ -98,7 +115,7 @@
               class="w-full flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white py-3.5 rounded-lg transition-all duration-200 mb-6"
             >
               <div class="bg-white w-6 h-6 rounded-full flex items-center justify-center mr-3">
-                <i class="fa-brands fa-google text-red-500"></i>
+                <i class="fa-brands fa-google text-red-500 text-xs"></i>
               </div>
               <span class="font-medium">Продолжить с Google</span>
             </a>
@@ -123,13 +140,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { router, Link } from '@inertiajs/vue3'
 
 const form = ref({
     username: '',
     phone: '',
     password: ''
+})
+
+const showPassword = ref(false)
+
+const passwordStrength = computed(() => {
+    if (!form.value.password) return { level: 0, text: '' }
+    
+    const hasLetter = /[a-zA-Zа-яА-Я]/.test(form.value.password)
+    const hasDigit = /\d/.test(form.value.password)
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(form.value.password)
+    const length = form.value.password.length
+    
+    let strength = 0
+    if (length >= 8) strength += 1
+    if (length >= 10) strength += 1
+    if (hasLetter && hasDigit) strength += 1
+    if (hasSpecial) strength += 1
+    
+    const levels = [
+        { level: 1, text: 'Слабый', color: 'bg-red-500' },
+        { level: 2, text: 'Средний', color: 'bg-orange-500' },
+        { level: 3, text: 'Хороший', color: 'bg-yellow-500' },
+        { level: 4, text: 'Надежный', color: 'bg-green-500' }
+    ]
+    
+    return levels[Math.min(strength, 3)] || levels[0]
 })
 
 const register = () => {
@@ -145,7 +188,6 @@ body {
   background-color: #0f172a;
 }
 
-/* Анимация градиента */
 .bg-gradient-to-br {
   background-size: 200% 200%;
   animation: gradientAnimation 10s ease infinite;
@@ -157,7 +199,6 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Эффект свечения при фокусе */
 input:focus {
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }

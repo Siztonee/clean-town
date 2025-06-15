@@ -11,12 +11,12 @@ class EventMember extends Model
 {
     protected $guarded = [];
 
-    public function User(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function Event(): BelongsTo
+    public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }

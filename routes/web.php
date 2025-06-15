@@ -6,6 +6,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\EventsController;
 use App\Http\Middleware\IsAdminMiddleware;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\FAQBoardController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Admin\StatsBoardController;
 use App\Http\Controllers\Admin\EventsBoardController;
 use App\Http\Controllers\Admin\GalleryBoardController;
 use App\Http\Controllers\Admin\HistoryBoardController;
+use App\Http\Controllers\Admin\EventMemberBoardController;
 use App\Http\Controllers\Admin\GalleryItemBoardController;
 use App\Http\Controllers\Admin\TeamMembersBoardController;
 
@@ -42,7 +44,13 @@ Route::middleware(['guest'])->group(function () {
 
 Route::prefix('admin')->middleware(['auth', IsAdminMiddleware::class])->group(function() {
     Route::get('', [DashBoardController::class, 'index'])->name('admin.dashboard.index');
+    Route::get('/users/search', [UserController::class, 'search'])->name('admin.users.search');
     Route::resource('/events', EventsBoardController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::prefix('/event/{event}')->group(function () {
+        Route::get('/', [EventMemberBoardController::class, 'index'])->name('event.members.index');
+        Route::post('/', [EventMemberBoardController::class, 'store'])->name('event.members.store');
+        Route::delete('/{member}', [EventMemberBoardController::class, 'destroy'])->name('event.members.destroy');
+    });
     Route::resource('/galleries', GalleryBoardController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::prefix('/gallery/{gallery}')->group(function () {
         Route::get('/', [GalleryItemBoardController::class, 'index'])->name('gallery.items.index');

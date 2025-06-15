@@ -107,7 +107,7 @@
               <div class="bg-white w-6 h-6 rounded-full flex items-center justify-center mr-3">
                 <i class="fa-brands fa-google text-red-500 text-xs"></i>
               </div>
-              <span class="font-medium">Google</span>
+              <span class="font-medium">Продолжить с Google</span>
             </a>
 
             <!-- Сообщение об ошибке -->

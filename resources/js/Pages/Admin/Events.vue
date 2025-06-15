@@ -24,7 +24,11 @@
                 </thead>
                 <tbody>
                 <tr v-for="(event, index) in props.events" :key="index" class="border-b border-gray-700 hover:bg-gray-700/50 transition">
-                    <td class="px-4 py-3">{{ event.title }}</td>
+                    <td class="px-4 py-3">
+                      <Link :href="route('event.members.index', event.id)">
+                        {{ event.title }}
+                      </Link>
+                    </td>
                     <td class="px-4 py-3">{{ event.starts_at }}</td>
                     <td class="px-4 py-3">
                     <span :class="[
@@ -48,6 +52,7 @@
                         </svg>
                     </button>
                     </td>
+                  
                 </tr>
                 </tbody>
             </table>
@@ -153,7 +158,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import AdminLayout from '@/Pages/Admin/Layouts/AdminLayout.vue'
-import { router } from '@inertiajs/vue3'
+import { router, Link } from '@inertiajs/vue3'
 
 const props = defineProps({
   events: Object

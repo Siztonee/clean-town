@@ -4,10 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Event;
+use App\Models\EventMember;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -15,9 +17,14 @@ class User extends Authenticatable
 
     protected $guarded = ['is_admin'];
 
-    public function Events(): HasMany
+    public function eventMembers(): HasMany
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(EventMember::class);
+    }
+    
+    public function events(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class, 'event_members', 'user_id', 'event_id');
     }
 
     /**
