@@ -8,6 +8,9 @@
     @routes
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>CleanTown Osh</title>
+    <meta name="description" content="Веб-сайт волонтерской организации CleanTown Osh">
+    <meta name="og:title" property="og:title" content="CleanTown Osh">
+    <meta name="og:title" property="og:title" content="Веб-сайт волонтерской организации CleanTown Osh">
   </head>
   <body>
     @inertia
