@@ -19,10 +19,4 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: cz91320.tw1.ru/public_html/
-          exclude: |
-            .env
-            **/vendor/**
-            **/node_modules/**
-            .git*
-            .github/**
+          server-dir: public_html/
