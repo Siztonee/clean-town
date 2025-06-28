@@ -22,7 +22,7 @@ class RegisterController extends Controller
 
         if (User::where('username', $validated['username']) && User::where('phone', $validated['phone'])) {
             User::create($validated);
-            return redirect()->route('login.index');
+            return redirect()->route('login');
         } 
 
         return back();

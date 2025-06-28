@@ -1,3 +1,9 @@
+- php artisan key:generate
+
+- set db connection in env
+- php artisan migrate
+
+- npm run build
 
 - php artisan migrate
 
