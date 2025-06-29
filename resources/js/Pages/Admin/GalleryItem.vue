@@ -207,7 +207,7 @@ const handleFilesSelect = (e) => {
   
   // Проверка размера файлов (макс. 20MB)
   const validFiles = files.filter(file => {
-    const isValid = file.size <= 20 * 1024 * 1024;
+    const isValid = file.size <= 100 * 1024 * 1024;
     if (!isValid) {
       alert(`Файл "${file.name}" слишком большой (макс. 20MB).`);
     }
@@ -215,7 +215,6 @@ const handleFilesSelect = (e) => {
   });
   
   selectedFiles.value.push(...validFiles);
-  fileDescriptions.value.push(...Array(validFiles.length).fill(''));
   
   // Сбрасываем input
   if (fileInput.value) {
@@ -226,7 +225,6 @@ const handleFilesSelect = (e) => {
 // Удаление файла из списка выбранных
 const removeSelectedFile = (index) => {
   selectedFiles.value.splice(index, 1)
-  fileDescriptions.value.splice(index, 1)
 }
 
 // Загрузка медиа на сервер
@@ -238,7 +236,6 @@ const uploadMedia = () => {
   // Добавляем все файлы и описания
   selectedFiles.value.forEach((file, index) => {
     formData.append(`files[${index}]`, file); // Ключ должен быть files[index]
-    formData.append(`descriptions[${index}]`, fileDescriptions.value[index] || '');
   });
   
   // Добавляем ID галереи
