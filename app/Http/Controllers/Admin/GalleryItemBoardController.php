@@ -24,7 +24,7 @@ class GalleryItemBoardController extends Controller
 
         return Inertia::render('Admin/GalleryItem', [
             'gallery' => $gallery,
-            'gallery_items' => GalleryItem::all()
+            'gallery_items' => $gallery->items
         ]);
     }
 
