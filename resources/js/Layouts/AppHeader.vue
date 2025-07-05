@@ -36,7 +36,7 @@
             {{ currentUser.username }}
           </div>
           <Link v-else
-            href="/register" 
+            href="/login" 
             class="ml-2 px-5 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 font-medium transition shadow-md hover:shadow-emerald-500/30">
             Присоединиться
           </Link>
@@ -85,7 +85,7 @@
             {{ currentUser.username }}
           </div>
           <Link v-else
-            href="/register" 
+            href="/login" 
             class="block mt-4 py-3 px-4 bg-emerald-600 text-white text-center rounded-full font-medium shadow-md hover:bg-emerald-500 transition"
             @click="isMenuOpen = false">
             Присоединиться

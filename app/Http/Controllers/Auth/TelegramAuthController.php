@@ -2,50 +2,54 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class GoogleAuthController extends Controller
+class TelegramAuthController extends Controller
 {
-    public function redirect(): RedirectResponse
+    public function redirect()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('telegram')->redirect();
     }
 
-    public function callback(): RedirectResponse
+    public function callback()
     {
         try {
-            $user = Socialite::driver('google')->user();
+            $user = Socialite::driver('telegram')->user();
         } catch (Throwable $e) {
-            return redirect('/login')->with('error', 'Google authentication failed.');
+            return redirect('/login')->with('error', 'Telegram authentication failed.');
         }
 
-        $existingUser = User::where('email', $user->email)->first();
-
+        $existingUser = User::where('telegram_id', $user->getId())->first();
+        
         if ($existingUser) {
             Auth::login($existingUser);
-            if (empty($existingUser->google_id)) {
+            if (empty($existingUser->telegram_id)) {
                 $existingUser->update([
-                    "google_id" => $user->getId()
+                    "telegram_id" => $user->getId()
                 ]);
             }
         } else {
             $newUser = User::updateOrCreate([
-                'email' => $user->email
+                'telegram_id' => $user->getId()
             ], [
                 'username' => $user->name,
                 'password' => bcrypt(Str::random(16)), 
-                'email_verified_at' => now()
+                'phone_verified_at' => now()
             ]);
-            
+
             Auth::login($newUser);
         }
 
         return redirect()->route('home.index');
+
     }
 }

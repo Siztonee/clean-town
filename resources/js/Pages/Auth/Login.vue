@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4">
     <div class="w-full max-w-md">
-      <!-- Логотип -->
       <div class="text-center mb-10">
         <div class="mx-auto bg-gradient-to-br from-emerald-500 to-teal-500 w-16 h-16 rounded-xl flex items-center justify-center mb-4 shadow-lg">
           <i class="fa fa-leaf text-2xl text-white"></i>
@@ -10,7 +9,6 @@
         <p class="text-gray-400 mt-2">Пожалуйста, войдите в свой аккаунт</p>
       </div>
 
-      <!-- Форма входа -->
       <div class="bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-700">
         <div class="p-8">
           <form @submit.prevent="login">
@@ -32,7 +30,6 @@
               </div>
             </div>
 
-            <!-- Поле: Пароль -->
             <div class="mb-6">
               <label for="password" class="block text-gray-300 mb-2 text-sm font-medium">Пароль</label>
               <div class="relative">
@@ -56,7 +53,6 @@
               </div>
             </div>
 
-            <!-- Запомнить и забыли пароль -->
             <div class="flex items-center justify-between mb-8">
               <div class="flex items-center">
                 <input 
@@ -75,7 +71,6 @@
               </a>
             </div>
 
-            <!-- Кнопка входа -->
             <button 
               type="submit"
               :disabled="form.processing"
@@ -92,14 +87,12 @@
               <span v-else>Войти</span>
             </button>
 
-            <!-- Разделитель -->
             <div class="flex items-center my-8">
               <div class="flex-grow border-t border-gray-700"></div>
               <span class="mx-4 text-gray-500 text-sm">или войти через</span>
               <div class="flex-grow border-t border-gray-700"></div>
             </div>
 
-            <!-- Кнопка Google -->
             <a 
               href="/login/google/redirect"
               class="w-full flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white py-3.5 rounded-lg transition-all duration-200 mb-6"
@@ -110,24 +103,17 @@
               <span class="font-medium">Продолжить с Google</span>
             </a>
 
-            <!-- Сообщение об ошибке -->
-            <div v-if="hasErrors" class="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-              <p class="text-sm text-red-400 text-center">
-                Неверные учетные данные. Пожалуйста, попробуйте снова.
-              </p>
-            </div>
-          </form>
-        </div>
+            <a 
+              href="/login/telegram/redirect" 
+              class="w-full flex items-center justify-center bg-gray-700 hover:bg-gray-600 text-white py-3.5 rounded-lg transition-all duration-200 mb-6"
+            >
+              <div class="bg-white w-6 h-6 rounded-full flex items-center justify-center mr-3">
+                <i class="fa-brands fa-telegram text-blue-500 text-xs"></i>
+              </div>
+              <span class="font-medium">Продолжить с Telegram</span>
+            </a>
 
-        <!-- Ссылка на регистрацию -->
-        <div class="bg-gray-900 px-8 py-5 text-center border-t border-gray-700">
-          <span class="text-gray-400">Еще нет аккаунта?</span>
-          <Link 
-            href="/register" 
-            class="text-emerald-400 hover:text-emerald-300 font-medium ml-2 transition-colors"
-          >
-            Зарегистрироваться
-          </Link>
+          </form>
         </div>
       </div>
     </div>

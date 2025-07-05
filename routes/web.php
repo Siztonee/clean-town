@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\DashBoardController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Admin\StatsBoardController;
 use App\Http\Controllers\Admin\EventsBoardController;
+use App\Http\Controllers\Auth\TelegramAuthController;
 use App\Http\Controllers\Admin\GalleryBoardController;
 use App\Http\Controllers\Admin\HistoryBoardController;
 use App\Http\Controllers\Admin\EventMemberBoardController;
@@ -32,12 +33,14 @@ Route::get('/about', [AboutController::class, 'index']);
 
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/register', [RegisterController::class, 'index'])->name('register');
-    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+    // Route::get('/register', [RegisterController::class, 'index'])->name('register');
+    // Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
     Route::get('/login/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
     Route::get('/login/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+    Route::get('/login/telegram/redirect', [TelegramAuthController::class, 'redirect'])->name('auth.telegram.redirect');
+    Route::get('/login/telegram/callback', [TelegramAuthController::class, 'callback'])->name('auth.telegram.callback');
 });
 
 
