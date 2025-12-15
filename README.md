@@ -1,14 +1,22 @@
-- php artisan key:generate
+# Clone repository
+git clone https://github.com/username/project-name.git
+cd project-name
 
-- set db connection in env
-- php artisan migrate
+# Install backend dependencies
+composer install
 
-- npm run build
+# Environment setup
+cp .env.example .env
+php artisan key:generate
 
-- php artisan migrate
+# Configure database in .env
+php artisan migrate
 
-- composer require inertiajs/inertia-laravel
-- php artisan inertia:middleware
+# Install frontend dependencies
+npm install
 
+# Build frontend assets
+npm run build
 
-- npm install @inertiajs/vue3 vue @vitejs/plugin-vue
+# Start development server
+php artisan serve
