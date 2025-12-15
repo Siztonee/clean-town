@@ -6,7 +6,6 @@ cd clean-town
 composer install
 
 # Environment setup
-cp .env.example .env
 php artisan key:generate
 
 # Configure database in .env
