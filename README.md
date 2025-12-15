@@ -1,6 +1,6 @@
 # Clone repository
-git clone https://github.com/username/project-name.git
-cd project-name
+git clone https://github.com/Siztonee/clean-town.git
+cd clean-town
 
 # Install backend dependencies
 composer install
